@@ -1,0 +1,9 @@
+data/seqs/*
+data/__pycache__
+data/mmnist/MNIST
+data/models/*
+data/results/*
+data/runs/*
+saved/log/*
+saved/models/*
+__pycache__/
