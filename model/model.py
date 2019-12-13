@@ -142,6 +142,13 @@ class Encoder(nn.Module):
         self.num_layers = num_layers
         self.initial_hidden_state = self.clstm[0].init_hidden(batch_size)
 
+    def bn(self, x, nc):
+        batch_norm = nn.BatchNorm3d(nc)
+        x = x.permute(0,2,1,3,4)
+        x = batch_norm(x)
+        x = x.permute(0,2,1,3,4)
+        return x
+    
     def forward(self, input):
         h = self.initial_hidden_state
         hidden_states = []
@@ -150,6 +157,7 @@ class Encoder(nn.Module):
             input = torch.reshape(input, (-1, input.shape[2], input.shape[3], input.shape[4]))
             input = self.act(self.subnet[i](input))
             input = torch.reshape(input, (b, sl, input.shape[1], input.shape[2], input.shape[3]))
+            input = self.bn(input, input.shape[2])
             state, input = self.clstm[i](input, h)
             hidden_states.append(state)
         return tuple(hidden_states)
@@ -163,7 +171,13 @@ class Decoder(nn.Module):
         self.act = nn.LeakyReLU()
         self.sigm = nn.Sigmoid()
         self.num_layers = num_layers
-
+    def bn(self, x, nc):
+        batch_norm = nn.BatchNorm3d(nc)
+        x = x.permute(0,2,1,3,4)
+        x = batch_norm(x)
+        x = x.permute(0,2,1,3,4)
+        return x
+    
     def forward(self, input, h):
         (b, sl) = input.shape[:2]
         for i in range(self.num_layers):
@@ -172,5 +186,6 @@ class Decoder(nn.Module):
             input = torch.reshape(input, (-1, input.shape[2], input.shape[3], input.shape[4]))
             input = self.act(self.subnet[i](input)) if i < self.num_layers-1 else self.subnet[i](input)
             input = torch.reshape(input, (b, sl, input.shape[1], input.shape[2], input.shape[3]))
-
+            if i < self.num_layers -1:
+                input = self.bn(input, input.shape[2])
         return input
