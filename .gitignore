@@ -7,3 +7,4 @@ data/runs/*
 saved/log/*
 saved/models/*
 __pycache__/
+config_mmnist.json
