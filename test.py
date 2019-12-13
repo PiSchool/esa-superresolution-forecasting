@@ -61,7 +61,7 @@ def main(config):
             save_tensors(full_target, config.resume.parent, i, target=True)
 
             # computing loss, metrics on test set
-            loss = loss_fn(output, target, data)
+            loss = loss_fn(output, target)
             batch_size = data.shape[0]
             total_loss += loss.item() * batch_size
             for i, metric in enumerate(metric_fns):

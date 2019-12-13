@@ -138,12 +138,12 @@ class Encoder(nn.Module):
 
         self.subnet = nn.ModuleList([nn.Conv2d(1, hidden_dim, 3, padding=1)])
         self.subnet.extend([nn.Conv2d(hidden_dim,hidden_dim,3,padding=1) for i in range(num_layers-1)])
-        self.act = nn.LeakyReLU()
+        self.act = nn.LeakyReLU(0.2)
         self.num_layers = num_layers
         self.initial_hidden_state = self.clstm[0].init_hidden(batch_size)
 
     def bn(self, x, nc):
-        batch_norm = nn.BatchNorm3d(nc)
+        batch_norm = nn.InstanceNorm3d(nc)
         x = x.permute(0,2,1,3,4)
         x = batch_norm(x)
         x = x.permute(0,2,1,3,4)
@@ -168,11 +168,11 @@ class Decoder(nn.Module):
         self.clstm = nn.ModuleList([CLSTM(shape, hidden_dim, filter_size, hidden_dim, 1, batch_first=True) for i in range(num_layers)])
         self.subnet = nn.ModuleList([nn.Conv2d(hidden_dim, hidden_dim,3,padding=1) for i in range(num_layers-1) ])
         self.subnet.append(nn.Conv2d(hidden_dim,1,1,padding=0))
-        self.act = nn.LeakyReLU()
+        self.act = nn.LeakyReLU(0.2)
         self.sigm = nn.Sigmoid()
         self.num_layers = num_layers
     def bn(self, x, nc):
-        batch_norm = nn.BatchNorm3d(nc)
+        batch_norm = nn.InstanceNorm3d(nc)
         x = x.permute(0,2,1,3,4)
         x = batch_norm(x)
         x = x.permute(0,2,1,3,4)

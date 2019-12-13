@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 from math import log10
 import pytorch_ssim
+from model.loss import masked_mse_loss
 
 def accuracy(output, target):
     with torch.no_grad():
@@ -23,8 +24,7 @@ def top_k_acc(output, target, k=3):
 
 def PSNR(output, target):
     with torch.no_grad():
-        criterion = nn.MSELoss()
-        mse = criterion(output, target)
+        mse = masked_mse_loss(output,target)
         psnr = 10 * log10(1 / mse.item())
         return psnr
 

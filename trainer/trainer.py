@@ -42,7 +42,7 @@ class Trainer(BaseTrainer):
             data, target = data.to(self.device), target.to(self.device)
             self.optimizer.zero_grad()
             output = self.model(data)
-            loss = self.criterion(output, target, data)
+            loss = self.criterion(output, target)
             loss.backward()
             total_norm = 0.
             for p in self.model.parameters():
@@ -90,7 +90,7 @@ class Trainer(BaseTrainer):
                 data, target = data.to(self.device), target.to(self.device)
 
                 output = self.model(data)
-                loss = self.criterion(output, target, data)
+                loss = self.criterion(output, target)
 
                 self.writer.set_step((epoch - 1) * len(self.valid_data_loader) + batch_idx, 'valid')
                 self.valid_metrics.update('loss', loss.item())
