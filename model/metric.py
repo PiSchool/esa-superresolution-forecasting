@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 from math import log10
-import pytorch_ssim
+from utils import pytorch_ssim
 from model.loss import masked_mse_loss
 
 def accuracy(output, target):
