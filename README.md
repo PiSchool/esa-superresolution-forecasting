@@ -1,6 +1,6 @@
 This repository includes the PyTorch implementation of an encoder-decoder forecasting network. It was built for the prediction of air-pollution variables based on Sentinel-5p imagery.
 
-![ESA_logo]() ![MEEO Logo]() 
+![ESA_logo](src="PiSchool/esa-superres-github/logos/Logo-Esa.png" width="128" height="128") ![MEEO Logo]() 
 ![SISTEMA Logo]() ![e-Geos Logo]()
 ![urbyetorbyt Logo]()
 
