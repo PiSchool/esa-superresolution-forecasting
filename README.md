@@ -30,3 +30,19 @@ Make sure you have Python3 installed.
  You can install the required python packages by running:
 ```console
 pip install -r requirements.txt
+```
+
+Before starting the model, place your configuration in the `config.json` file.
+You can configure the following parameters:
+```
+name: name of the folder in which logs and model checkpoints are saved.
+n_gpu: number of gpus for training, multi-gpu training is supported.
+arch: model parameters
+data_loader: options for the loading of the dataset
+optimizer: optimization type and learning rate
+loss: loss function used for training
+metrics: metrics used for evaluation
+trainer: training specifications, such as number of epochs and early stopping 
+```
+
+
