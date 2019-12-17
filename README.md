@@ -13,23 +13,22 @@ This repository includes the PyTorch implementation of an encoder-decoder foreca
 
 ## Introduction
 
-Earth observation is producing a large amount of data for multiple applications as agriculture, land management, maritime surveillance, meteorological prediction… In the context of climate change the analysis of the evolution of atmospheric pollution is more and more needed.
+The Copernicus program is a European program for Earth Observation and monitoring. The Sentinel mission from the European Space Agency is part of this initiative, it consists of six missions of different satellite sensors for multiple applications as land management, maritime surveillance, atmosphere monitoring… 
 
-With the context of big data in earth observation and the development of accurate methods in Artificial Intelligence there is an interest growing for combining both fields and to provide better analysis and data. 
+Air pollution is known as one of the biggest risks for the environment and human health, due to it consequences the need to monitor it is growing.
+
+Moreover the context of big data in earth observation and the constant development of accurate methods in Artificial Intelligence is creating new opportunity for remote sensing community. By applying deep learning methods on satellite imagery, it produce better data and better analysis.
 
 ## Problem statement
 
-In atmospheric pollution, a numerical model produced by the Copernicus Atmosphere Monitoring Service (CAMS) is commonly used. The data from this model is produced by combination of ground measurement and satellite data to monitor pollution variable in the total column of the atmosphere. This data is at a global scale with a 40km spatial resolution and a hourly temporal resolution. Moreover the numerical model is providing 5 days of forecasting of the pollution variables.
-
-Satellite data are more and more used, and due to it resolution the interest in it is growing up. Sentinel-5p is one of this satellite, launched in 2017 by the European Space Agency. It perform measurements of pollution variable concentration in the atmosphere, all around the world at a 5 km spatial resolution and with daily revisit time.
-
-The main objective of earth observation field is to get better resolution data, in terms of spatial and temporal resolution. In this context of optimisation of the data, the main idea of the work presented here is to reach 5 days of forecasting of pollution variables at the same resolution than Sentinel-5p. For this project the focus was done on NO2 concentration in the atmosphere.
+In atmospheric pollution, a numerical model produced by the Copernicus Atmosphere Monitoring Service (CAMS) is commonly used. The data produced is a combination of ground measurement and satellite data to monitor the concentration of gases in the total column of the atmosphere. This data is at a global scale with a 40km spatial resolution and an hourly temporal resolution. Moreover the numerical model is providing 5 days of forecasting of the pollution variables.
+Due to the resolution of satellite data, the interest in it is growing up. Sentinel-5p is one of this satellite, launched in 2017 by the European Space Agency. It performs measurements every day all around the world for mapping the pollution gases in the atmosphere with a spatial resolution of 5 km.
 
 ## Solution
 
-The solution proposed in the respository consist in the prediction of the next Sentinel-5p image. The model learnt on temporal sequences to detect how the images are evolving through time. By considering the last image available the model is able to provide five days of forecasting of NO2 concentration in the atmosphere with one image predicted per day.
+In this project to provide better information in air pollution monitoring, based on the data available for forecasting of pollution variable, we decided to produce a better resolution data for this purpose. Based on deep learning techniques, the Convolution Neural Network (CNN) learnt from temporal sequences to detect the evolution of Sentinel-5p images through time. By considering the last available image, the model is able to provide five days of forecasting of Sentinel-5p for NO2 concentration in the atmosphere.
 
-<img src="https://github.com/MaxHouel/First/blob/master/random/prediction_solution.PNG?raw=true" width="1000" height="125">
+<img src="https://github.com/MaxHouel/First/blob/master/random/prediction_solution.PNG?raw=true" width="1000" height="150">
 
 ## Model architecture
 
