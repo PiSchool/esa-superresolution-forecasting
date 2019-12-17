@@ -1,3 +1,5 @@
+### Sentinel-5p forecasting
+
 This repository includes the PyTorch implementation of an encoder-decoder forecasting network. It was built for the prediction of air-pollution variables based on Sentinel-5p imagery.
 
 ![ESA_logo]()
@@ -5,10 +7,6 @@ This repository includes the PyTorch implementation of an encoder-decoder foreca
 ![SISTEMA Logo]() 
 ![e-Geos Logo]()
 ![urbyetorbyt Logo]()
-
-
-
-
 
 
 # Introduction
@@ -27,3 +25,7 @@ The main objective of earth observation field is to get better resolution data, 
 
 A better resolution for forecasting, many applications as wildfire / volcanic monitoring, public awereness, will be more accurate than it is already.
 
+## Setup to get started
+Make sure you have Python3 installed. You can install the required python packages by running:
+'''console
+pip install -r requirements.txt
