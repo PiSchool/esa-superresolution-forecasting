@@ -1,4 +1,4 @@
-### Sentinel-5p forecasting
+# Sentinel-5p forecasting
 
 This repository includes the PyTorch implementation of an encoder-decoder forecasting network. It was built for the prediction of air-pollution variables based on Sentinel-5p imagery.
 
@@ -9,13 +9,13 @@ This repository includes the PyTorch implementation of an encoder-decoder foreca
 ![urbyetorbyt Logo]()
 
 
-# Introduction
+## Introduction
 
 Earth observation is producing a large amount of data for multiple applications as agriculture, land management, maritime surveillance, meteorological prediction… In the context of climate change the analysis of the evolution of atmospheric pollution is more and more needed.
 
 With the context of big data in earth observation and the development of accurate methods in Artificial Intelligence there is an interest growing for combining both fields and to provide better analysis and data. 
 
-# Problem statement
+## Problem statement
 
 In atmospheric pollution, a numerical model produced by the Copernicus Atmosphere Monitoring Service is commonly used. The data from this model is produced by combination of ground measurement and satellite data to monitor pollution variable in the total column of the atmosphere at a global scale with a 40km spatial resolution and a hourly temporal resolution. Moreover the numerical model is providing 5 days of forecasting of the pollution variables.
 
@@ -26,6 +26,7 @@ The main objective of earth observation field is to get better resolution data, 
 A better resolution for forecasting, many applications as wildfire / volcanic monitoring, public awereness, will be more accurate than it is already.
 
 ## Setup to get started
-Make sure you have Python3 installed. You can install the required python packages by running:
-'''console
+Make sure you have Python3 installed.
+ You can install the required python packages by running:
+```console
 pip install -r requirements.txt
