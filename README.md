@@ -1,13 +1,9 @@
+<img src="http://www.spacetechexpo.eu/assets/files/images/news%20pages/BRE/esa_logo2.jpg" width="95" height="55"> | <img src="http://www.meeo.it/wp/wp-content/uploads/2014/01/meeo_logo_trans.png" width="95" height="55"> | <img src="http://www.sistema.at/wp/wp-content/uploads/2017/10/LOGO_def_sistema.png" width="95" height="55"> | <img src="https://c.cs85.content.force.com/servlet/servlet.ImageServer?id=0156E000000Kg6fQAC&oid=00D6E000000DZCb" width="95" height="55"> | <img src="http://www.spaceexe.com/wp-content/uploads/2019/09/UrbyetOrbit_space.png" width="95" height="55">
+
+
 # Sentinel-5p forecasting
 
 This repository includes the PyTorch implementation of an encoder-decoder forecasting network. It was built for the prediction of air-pollution variables based on Sentinel-5p imagery.
-
-![ESA_logo]()
-![MEEO Logo]() 
-![SISTEMA Logo]() 
-![e-Geos Logo]()
-![urbyetorbyt Logo]()
-
 
 ## Introduction
 
@@ -17,13 +13,19 @@ With the context of big data in earth observation and the development of accurat
 
 ## Problem statement
 
-In atmospheric pollution, a numerical model produced by the Copernicus Atmosphere Monitoring Service is commonly used. The data from this model is produced by combination of ground measurement and satellite data to monitor pollution variable in the total column of the atmosphere at a global scale with a 40km spatial resolution and a hourly temporal resolution. Moreover the numerical model is providing 5 days of forecasting of the pollution variables.
+In atmospheric pollution, a numerical model produced by the Copernicus Atmosphere Monitoring Service is commonly used. The data from this model is produced by combination of ground measurement and satellite data to monitor pollution variable in the total column of the atmosphere. This data is at a global scale with a 40km spatial resolution and a hourly temporal resolution. Moreover the numerical model is providing 5 days of forecasting of the pollution variables.
 
-Satellite data are more and more used, and due to it resolution the interest in it is growing up. Sentinel-5p is one of this satellite, launched in 2017 by the European Space Agency, it perform measurements of pollution variable all around the world at a 5.5km spatial resolution and daily revisit.
+Satellite data are more and more used, and due to it resolution the interest in it is growing up. Sentinel-5p is one of this satellite, launched in 2017 by the European Space Agency. It perform measurements of pollution variable concentration in the atmosphere, all around the world at a 5 km spatial resolution and with daily revisit time.
 
-The main objective of earth observation field is to get better resolution data, in terms of spatial and temporal resolution. In this context of optimisation of the data, the main idea of the project presented here is to reach 5 days of pollution variables forecasting at the same resolution of Sentinel-5p. 
+The main objective of earth observation field is to get better resolution data, in terms of spatial and temporal resolution. In this context of optimisation of the data, the main idea of the work presented here is to reach 5 days of forecasting of pollution variables at the same resolution than Sentinel-5p. For this project the focus was done on NO2 concentration in the atmosphere.
 
-A better resolution for forecasting, many applications as wildfire / volcanic monitoring, public awereness, will be more accurate than it is already.
+## Solution
+
+The solution proposed in the respository consist in the prediction of the next Sentinel-5p image. The model learnt on temporal sequences to detect how the images are evolving through time. By considering the last image available the model is able to provide five days of forecasting of NO2 concentration in the atmosphere with one image predicted per day.
+
+## Model architecture
+
+## Results
 
 ## Setup to get started
 Make sure you have Python3 installed.
