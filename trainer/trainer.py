@@ -2,8 +2,8 @@ import numpy as np
 import torch
 from torchvision.utils import make_grid
 from base import BaseTrainer
-from utils import inf_loop, MetricTracker
-
+from utils import inf_loop, MetricTracker, mem_report, save_tensors
+import gc
 
 class Trainer(BaseTrainer):
     """
@@ -24,7 +24,7 @@ class Trainer(BaseTrainer):
         self.valid_data_loader = valid_data_loader
         self.do_validation = self.valid_data_loader is not None
         self.lr_scheduler = lr_scheduler
-        self.log_step = int(np.sqrt(data_loader.batch_size))
+        self.log_step = 1#int(np.sqrt(data_loader.batch_size))
 
         self.train_metrics = MetricTracker('loss', *[m.__name__ for m in self.metric_ftns], writer=self.writer)
         self.valid_metrics = MetricTracker('loss', *[m.__name__ for m in self.metric_ftns], writer=self.writer)
@@ -40,10 +40,13 @@ class Trainer(BaseTrainer):
         self.train_metrics.reset()
         for batch_idx, (data, target) in enumerate(self.data_loader):
             data, target = data.to(self.device), target.to(self.device)
+            (data, cams) = torch.chunk(data, 2, dim=2)
             self.optimizer.zero_grad()
-            output = self.model(data)
+            output = self.model(data, cams)
+            mem_report()
             loss = self.criterion(output, target)
             loss.backward()
+            torch.nn.utils.clip_grad_norm_(self.model.parameters(), 0.1)
             total_norm = 0.
             for p in self.model.parameters():
                 param_norm = p.grad.data.norm(2)
@@ -61,9 +64,10 @@ class Trainer(BaseTrainer):
                     epoch,
                     self._progress(batch_idx),
                     loss.item()))
+                self.writer.add_image('input', make_grid(data[0].cpu(), nrow=data.shape[1]))
+                self.writer.add_image('output', make_grid(output[0].cpu(), nrow=output.shape[1]))
+                self.writer.add_image('input_cams', make_grid(cams[0].cpu(), nrow=cams.shape[1]))
                 self.writer.add_scalar('gradient_norm', total_norm)
-                self.writer.add_image('input', make_grid(data[0].cpu(), nrow=data.shape[1], normalize=True))
-
             if batch_idx == self.len_epoch:
                 break
         log = self.train_metrics.result()
@@ -74,6 +78,8 @@ class Trainer(BaseTrainer):
 
         if self.lr_scheduler is not None:
             self.lr_scheduler.step()
+
+
         return log
 
     def _valid_epoch(self, epoch):
@@ -88,15 +94,15 @@ class Trainer(BaseTrainer):
         with torch.no_grad():
             for batch_idx, (data, target) in enumerate(self.valid_data_loader):
                 data, target = data.to(self.device), target.to(self.device)
-
-                output = self.model(data)
+                (data, cams) = torch.chunk(data, 2, dim=2)
+                output = self.model(data, cams)
                 loss = self.criterion(output, target)
 
                 self.writer.set_step((epoch - 1) * len(self.valid_data_loader) + batch_idx, 'valid')
                 self.valid_metrics.update('loss', loss.item())
                 for met in self.metric_ftns:
                     self.valid_metrics.update(met.__name__, met(output, target))
-                self.writer.add_image('input', make_grid(data[0].cpu(), nrow=data.shape[1], normalize=True))
+                #self.writer.add_image('input', make_grid(data[0].cpu(), nrow=data.shape[1], normalize=True))
 
         # add histogram of model parameters to the tensorboard
         for name, p in self.model.named_parameters():
@@ -112,3 +118,4 @@ class Trainer(BaseTrainer):
             current = batch_idx
             total = self.len_epoch
         return base.format(current, total, 100.0 * current / total)
+

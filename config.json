@@ -1,30 +1,28 @@
 {
-  "name": "S5_pred",
+  "name": "S5_InstanceNorm_5x5_nl3",
   "n_gpu": 1,
   "arch": {
     "type": "Net",
     "args": {
       "shape": [128,128],
       "input_chans": 1,
-      "kernel_size":3,
+      "kernel_size": 5,
       "hidden_dim": 64,
-      "batch_size": 8,
+      "batch_size": 4,
       "n_past": 5,
       "n_fut": 5,
-      "num_layer": 2
+      "num_layer": 3
     }
   },
   "data_loader": {
     "type": "S5DataLoader",
     "args": {
-      "data_dir": "data/seqs",
-      "batch_size": 8,
+      "data_dir": "data/s5cams",
+      "batch_size": 4,
       "shuffle": true,
       "validation_split": 0.1,
       "num_workers": 0,
-      "im_size": 128,
-      "n_past": 5,
-      "n_fut": 5
+      "im_size": 128
     }
 
   },
@@ -52,7 +50,7 @@
         "epochs": 200,
 
         "save_dir": "saved/",
-        "save_period": 10,
+        "save_period": 5,
         "verbosity": 2,
 
         "monitor": "min val_loss",

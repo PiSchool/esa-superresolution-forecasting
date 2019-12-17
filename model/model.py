@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 from base import BaseModel
 import gc
+from model.trajgru import TrajGRU
 
 class CLSTM_cell(nn.Module):
     """Initialize a basic Conv LSTM cell.
@@ -118,16 +119,21 @@ class Net(BaseModel):
                  batch_size, n_past, n_fut, num_layer):
         super(Net, self).__init__()
         self.enc = Encoder(shape, input_chans, kernel_size, hidden_dim, num_layer, batch_size)
-        self.dec = Decoder(shape, kernel_size, hidden_dim, num_layer)
+        self.dec = Decoder(shape, kernel_size, hidden_dim, num_layer, batch_size)
         self.n_past = n_past
         self.n_fut = n_fut
         self.input_chans = input_chans
         self.hidden_dim = hidden_dim
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu") 
-
-    def forward(self, input_tensor):
+        self.conv_init = nn.Conv2d(1,hidden_dim,1)
+        
+    def forward(self, input_tensor, cams=None):
         h = self.enc(input_tensor)
-        x = torch.zeros((input_tensor.shape[0] , self.n_fut, self.hidden_dim, input_tensor.shape[3],input_tensor.shape[4])).to(self.device)
+        (b, sl) = input_tensor.shape[:2]
+        #x = torch.zeros((input_tensor.shape[0] , self.n_fut, self.hidden_dim, input_tensor.shape[3],input_tensor.shape[4])).to(self.device)
+        x = torch.reshape(cams, (-1, cams.shape[2], cams.shape[3], cams.shape[4]))
+        x = self.conv_init(x)
+        x = torch.reshape(x, (b, sl, self.hidden_dim, x.shape[2], x.shape[3]))
         out = self.dec(x, h)
         return out
 
@@ -135,20 +141,33 @@ class Encoder(nn.Module):
     def __init__(self, shape, input_chans, filter_size, hidden_dim, num_layers, batch_size):
         super().__init__()
         self.clstm = nn.ModuleList([CLSTM(shape, hidden_dim, filter_size, hidden_dim, 1, batch_first=True) for i in range(num_layers)])
+        # self.clstm = nn.ModuleList([TrajGRU(8, hidden_dim//2, (batch_size, shape[0], shape[1]), 
+        #                             zoneout=0.0, L=13, i2h_kernel=(3, 3), i2h_stride=(1, 1), i2h_pad=(1, 1),
+        #                                     h2h_kernel=(5, 5), h2h_dilate=(1, 1)),
 
+        #                             TrajGRU(hidden_dim, hidden_dim, (batch_size, shape[0], shape[1]), zoneout=0.0, L=13,
+        #                                     i2h_kernel=(3, 3), i2h_stride=(1, 1), i2h_pad=(1, 1), h2h_kernel=(5, 5),
+        #                                     h2h_dilate=(1, 1)),
+
+        #                             TrajGRU(hidden_dim, hidden_dim, (batch_size, shape[0], shape[1]),
+        #                                     zoneout=0.0, L=9,
+        #                                     i2h_kernel=(3, 3), i2h_stride=(1, 1), i2h_pad=(1, 1),
+        #                                     h2h_kernel=(3, 3), h2h_dilate=(1, 1))])
         self.subnet = nn.ModuleList([nn.Conv2d(1, hidden_dim, 3, padding=1)])
-        self.subnet.extend([nn.Conv2d(hidden_dim,hidden_dim,3,padding=1) for i in range(num_layers-1)])
+        self.subnet.extend([nn.Conv2d(hidden_dim,hidden_dim,3,padding=1),nn.Conv2d(hidden_dim,hidden_dim,3,padding=1)])
         self.act = nn.LeakyReLU(0.2)
         self.num_layers = num_layers
         self.initial_hidden_state = self.clstm[0].init_hidden(batch_size)
 
+
     def bn(self, x, nc):
-        batch_norm = nn.InstanceNorm3d(nc)
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        batch_norm = nn.InstanceNorm3d(nc).to(device)
         x = x.permute(0,2,1,3,4)
         x = batch_norm(x)
         x = x.permute(0,2,1,3,4)
         return x
-    
+
     def forward(self, input):
         h = self.initial_hidden_state
         hidden_states = []
@@ -159,33 +178,48 @@ class Encoder(nn.Module):
             input = torch.reshape(input, (b, sl, input.shape[1], input.shape[2], input.shape[3]))
             input = self.bn(input, input.shape[2])
             state, input = self.clstm[i](input, h)
+            #input, state = self.clstm[i](input)
+            #input = input.transpose(0,1)
             hidden_states.append(state)
         return tuple(hidden_states)
 
 class Decoder(nn.Module):
-    def __init__(self, shape, filter_size, hidden_dim, num_layers):
+    def __init__(self, shape, filter_size, hidden_dim, num_layers, batch_size):
         super().__init__()
         self.clstm = nn.ModuleList([CLSTM(shape, hidden_dim, filter_size, hidden_dim, 1, batch_first=True) for i in range(num_layers)])
-        self.subnet = nn.ModuleList([nn.Conv2d(hidden_dim, hidden_dim,3,padding=1) for i in range(num_layers-1) ])
+        # self.clstm = nn.ModuleList([TrajGRU(hidden_dim, hidden_dim, (batch_size, shape[0], shape[1]), zoneout=0.0, L=13,
+        #         i2h_kernel=(3, 3), i2h_stride=(1, 1), i2h_pad=(1, 1),
+        #         h2h_kernel=(3, 3), h2h_dilate=(1, 1)),
+
+        #                             TrajGRU(hidden_dim, hidden_dim, (batch_size, shape[0], shape[1]), zoneout=0.0, L=13,
+        #         i2h_kernel=(3, 3), i2h_stride=(1, 1), i2h_pad=(1, 1), h2h_kernel=(5, 5), h2h_dilate=(1, 1)),
+
+        #                             TrajGRU(hidden_dim//2, hidden_dim//2, (batch_size, shape[0], shape[1]), zoneout=0.0, L=9,
+        #         i2h_kernel=(3, 3), i2h_stride=(1, 1), i2h_pad=(1, 1),
+        #         h2h_kernel=(5, 5), h2h_dilate=(1, 1))])
+
+        self.subnet = nn.ModuleList([nn.Conv2d(hidden_dim, hidden_dim,3,padding=1), nn.Conv2d(hidden_dim, hidden_dim, 3, padding=1)])
         self.subnet.append(nn.Conv2d(hidden_dim,1,1,padding=0))
         self.act = nn.LeakyReLU(0.2)
-        self.sigm = nn.Sigmoid()
         self.num_layers = num_layers
+
     def bn(self, x, nc):
-        batch_norm = nn.InstanceNorm3d(nc)
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        batch_norm = nn.InstanceNorm3d(nc).to(device)
         x = x.permute(0,2,1,3,4)
         x = batch_norm(x)
         x = x.permute(0,2,1,3,4)
         return x
-    
+
     def forward(self, input, h):
         (b, sl) = input.shape[:2]
         for i in range(self.num_layers):
             state, input = self.clstm[i](input, h[(i+1)*-1]) #todo check dimension
             input = input.transpose(0,1)
+            #input, state = self.clstm[i](input, h[(i+1)*-1])
             input = torch.reshape(input, (-1, input.shape[2], input.shape[3], input.shape[4]))
             input = self.act(self.subnet[i](input)) if i < self.num_layers-1 else self.subnet[i](input)
             input = torch.reshape(input, (b, sl, input.shape[1], input.shape[2], input.shape[3]))
-            if i < self.num_layers -1:
+            if i < self.num_layers - 1:
                 input = self.bn(input, input.shape[2])
         return input
