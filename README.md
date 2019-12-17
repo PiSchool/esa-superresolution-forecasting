@@ -47,7 +47,7 @@ trainer: training specifications, such as number of epochs and early stopping
 
 ## Usage:
 
-###Training:
+### Training:
 ```console
 python main.py -c config.json
 ```
