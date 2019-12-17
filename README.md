@@ -23,6 +23,8 @@ The main objective of earth observation field is to get better resolution data, 
 
 The solution proposed in the respository consist in the prediction of the next Sentinel-5p image. The model learnt on temporal sequences to detect how the images are evolving through time. By considering the last image available the model is able to provide five days of forecasting of NO2 concentration in the atmosphere with one image predicted per day.
 
+<img src="https://github.com/MaxHouel/First/blob/master/random/prediction_solution.PNG?raw=true" width="1000" height="125">
+
 ## Model architecture
 
 ## Results
