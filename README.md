@@ -9,8 +9,9 @@
 
 # Sentinel-5p forecasting
 
-This repository includes the PyTorch implementation of an encoder-decoder forecasting network. It was built for the prediction of air-pollution variables based on Sentinel-5p imagery.
-
+This repository includes the PyTorch implementation of an encoder-decoder forecasting network. It was built for the prediction of air-pollution variables based on two ESA data products: 
+Atmospheric measurements sensed by the [Sentinel-5p](https://sentinel.esa.int/web/sentinel/missions/sentinel-5p) satellite and an air-quality forecasting model provided by the [Copernicus Atmospheric Monitoring Service](https://atmosphere.copernicus.eu/data) that combines satellite observations with sophisticated chemistry and transport models.
+ 
 ## Introduction
 
 The Copernicus program is a European program for Earth Observation and monitoring. The Sentinel mission from the European Space Agency is part of this initiative, it consists of six missions of different satellite sensors for multiple applications as land management, maritime surveillance, atmosphere monitoring… 
@@ -70,4 +71,16 @@ python main.py --device 0,1,2,3 -c config.json
 ```console
 python test.py -c config.json -r /path/to/model_checkpoint
 ```
+
+## License
+
+This project is licensed under the MIT License. See LICENSE for more details.
+Except as contained in this notice, the name of the authors shall not be used in advertising or otherwise to promote the sale, use or other dealings in this Software without prior written authorization from the authors.
+
+## Acknowledgements
+
+This work is the result of a challenge proposed by ESA as part of the Pi School of AI 2019 Q4 programme.
+We are grateful to all organizers, stakeholders and mentors for providing us this opportunity.
+
+
 
