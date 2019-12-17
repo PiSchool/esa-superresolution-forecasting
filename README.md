@@ -1,4 +1,10 @@
-<img src="http://www.spacetechexpo.eu/assets/files/images/news%20pages/BRE/esa_logo2.jpg" width="95" height="55"> | <img src="http://www.meeo.it/wp/wp-content/uploads/2014/01/meeo_logo_trans.png" width="95" height="55"> | <img src="http://www.sistema.at/wp/wp-content/uploads/2017/10/LOGO_def_sistema.png" width="95" height="55"> | <img src="https://c.cs85.content.force.com/servlet/servlet.ImageServer?id=0156E000000Kg6fQAC&oid=00D6E000000DZCb" width="95" height="55"> | <img src="http://www.spaceexe.com/wp-content/uploads/2019/09/UrbyetOrbit_space.png" width="95" height="55">
+<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6ELxXcZzhZlcyKtNAYf4woGljLbxPKHRJUyTbM_bVlPrWQ_9b&s" width="150" height="40">
+
+<img src="http://www.spacetechexpo.eu/assets/files/images/news%20pages/BRE/esa_logo2.jpg" width="95" height="55"> |
+<img src="http://www.meeo.it/wp/wp-content/uploads/2014/01/meeo_logo_trans.png" width="95" height="55"> | 
+<img src="http://www.sistema.at/wp/wp-content/uploads/2017/10/LOGO_def_sistema.png" width="95" height="55"> | 
+<img src="https://c.cs85.content.force.com/servlet/servlet.ImageServer?id=0156E000000Kg6fQAC&oid=00D6E000000DZCb" width="95" height="55"> | 
+<img src="http://www.spaceexe.com/wp-content/uploads/2019/09/UrbyetOrbit_space.png" width="95" height="55">
 
 
 # Sentinel-5p forecasting
@@ -13,7 +19,7 @@ With the context of big data in earth observation and the development of accurat
 
 ## Problem statement
 
-In atmospheric pollution, a numerical model produced by the Copernicus Atmosphere Monitoring Service is commonly used. The data from this model is produced by combination of ground measurement and satellite data to monitor pollution variable in the total column of the atmosphere. This data is at a global scale with a 40km spatial resolution and a hourly temporal resolution. Moreover the numerical model is providing 5 days of forecasting of the pollution variables.
+In atmospheric pollution, a numerical model produced by the Copernicus Atmosphere Monitoring Service (CAMS) is commonly used. The data from this model is produced by combination of ground measurement and satellite data to monitor pollution variable in the total column of the atmosphere. This data is at a global scale with a 40km spatial resolution and a hourly temporal resolution. Moreover the numerical model is providing 5 days of forecasting of the pollution variables.
 
 Satellite data are more and more used, and due to it resolution the interest in it is growing up. Sentinel-5p is one of this satellite, launched in 2017 by the European Space Agency. It perform measurements of pollution variable concentration in the atmosphere, all around the world at a 5 km spatial resolution and with daily revisit time.
 
