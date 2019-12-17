@@ -1,12 +1,3 @@
-<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6ELxXcZzhZlcyKtNAYf4woGljLbxPKHRJUyTbM_bVlPrWQ_9b&s" width="150" height="40">
-
-<img src="http://www.spacetechexpo.eu/assets/files/images/news%20pages/BRE/esa_logo2.jpg" width="95" height="55"> |
-<img src="http://www.meeo.it/wp/wp-content/uploads/2014/01/meeo_logo_trans.png" width="95" height="55"> | 
-<img src="http://www.sistema.at/wp/wp-content/uploads/2017/10/LOGO_def_sistema.png" width="95" height="55"> | 
-<img src="https://c.cs85.content.force.com/servlet/servlet.ImageServer?id=0156E000000Kg6fQAC&oid=00D6E000000DZCb" width="95" height="55"> | 
-<img src="http://www.spaceexe.com/wp-content/uploads/2019/09/UrbyetOrbit_space.png" width="95" height="55">
-
-
 # Sentinel-5p forecasting
 
 This repository includes the PyTorch implementation of an encoder-decoder forecasting network. It was built for the prediction of air-pollution variables based on two ESA data products: 
@@ -33,7 +24,12 @@ In this project to provide better information in air pollution monitoring, based
 
 ## Model architecture
 
+The encoder-decoder network uses a [Convolutional LSTM](https://arxiv.org/abs/1506.04214) architecture. The spatial structure of the input is preserved throught the layers of the network. 
+The model is trained using a masked MSE loss and the ADAM optimizer.
+
 ## Results
+
+The model's performance is evaluated on the PSNR and SSIM metrics.
 
 ## Setup to get started
 Make sure you have Python3 installed.
@@ -82,5 +78,12 @@ Except as contained in this notice, the name of the authors shall not be used in
 This work is the result of a challenge proposed by ESA as part of the Pi School of AI 2019 Q4 programme.
 We are grateful to all organizers, stakeholders and mentors for providing us this opportunity.
 
+<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6ELxXcZzhZlcyKtNAYf4woGljLbxPKHRJUyTbM_bVlPrWQ_9b&s" width="150" height="40">
+
+<img src="http://www.spacetechexpo.eu/assets/files/images/news%20pages/BRE/esa_logo2.jpg" width="95" height="55"> |
+<img src="http://www.meeo.it/wp/wp-content/uploads/2014/01/meeo_logo_trans.png" width="95" height="55"> | 
+<img src="http://www.sistema.at/wp/wp-content/uploads/2017/10/LOGO_def_sistema.png" width="95" height="55"> | 
+<img src="https://c.cs85.content.force.com/servlet/servlet.ImageServer?id=0156E000000Kg6fQAC&oid=00D6E000000DZCb" width="95" height="55"> | 
+<img src="http://www.spaceexe.com/wp-content/uploads/2019/09/UrbyetOrbit_space.png" width="95" height="55">
 
 
