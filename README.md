@@ -45,4 +45,20 @@ metrics: metrics used for evaluation
 trainer: training specifications, such as number of epochs and early stopping 
 ```
 
+## Usage:
+
+###Training:
+```console
+python main.py -c config.json
+```
+
+Using multiple GPU:
+```console
+python main.py --device 0,1,2,3 -c config.json
+```
+
+### Evaluation
+```console
+python test.py -c config.json -r /path/to/model_checkpoint
+```
 
