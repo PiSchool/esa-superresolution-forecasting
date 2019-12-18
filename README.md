@@ -41,8 +41,7 @@ The model's performance is evaluated on the Peak signal-to-noise ratio (PSNR) an
 
 Both models were evaluated on a test set of 300 sequences with 5 frames being used as input and the following 5 frames being predicted by the network. 
 
-![alt text][trainloss]
-[trainloss]: https://github.com/PiSchool/esa-superres-github/blob/master/data/trainloss.png "Training loss"
+![alt text]( https://github.com/PiSchool/esa-superres-github/blob/master/data/trainloss.png "Training loss")
 
 ## Setup to get started
 Make sure you have Python3 installed.
