@@ -2,7 +2,7 @@
 
 This repository includes the PyTorch implementation of an encoder-decoder forecasting network. It was built for the prediction of air-pollution variables based on two ESA data products: 
 Atmospheric measurements sensed by the [Sentinel-5p](https://sentinel.esa.int/web/sentinel/missions/sentinel-5p) satellite and an air-quality forecasting model provided by the [Copernicus Atmospheric Monitoring Service](https://atmosphere.copernicus.eu/data) that combines satellite observations with sophisticated chemistry and transport models.
- 
+<!--- 
 ## Introduction
 
 The Copernicus program is a European program for Earth Observation and monitoring. The Sentinel mission from the European Space Agency is part of this initiative, it consists of six missions of different satellite sensors for multiple applications as land management, maritime surveillance, atmosphere monitoring… 
@@ -21,13 +21,13 @@ Due to the resolution of satellite data, the interest in it is growing up. Senti
 In this project to provide better information in air pollution monitoring, based on the data available for forecasting of pollution variable, we decided to produce a better resolution data for this purpose. Based on deep learning techniques, the Convolution Neural Network (CNN) learnt from temporal sequences to detect the evolution of Sentinel-5p images through time. By considering the last available image, the model is able to provide five days of forecasting of Sentinel-5p for NO2 concentration in the atmosphere.
 
 <img src="https://github.com/MaxHouel/First/blob/master/random/prediction_solution.PNG?raw=true" width="1000" height="150">
-
+-->
 ## Model architecture
 
 The encoder-decoder network uses a [Convolutional LSTM](https://arxiv.org/abs/1506.04214) architecture. The spatial structure of the input is preserved throught the layers of the network. 
 The model is trained using a masked MSE loss and the ADAM optimizer.
 
-We employ two different versions of this architecture. One uses Sentinel-5 sequences solely, the other creates a prediction using the numerical forecast data as a conditional input to the decoder.
+We employ two different versions of this architecture. One uses Sentinel-5 sequences solely (s5-fc), the other creates a prediction using the numerical forecast data as a conditional input to the decoder (Cond-S5-fc).
 
 
 ## Results
@@ -38,6 +38,8 @@ The model's performance is evaluated on the Peak signal-to-noise ratio (PSNR) an
 |-----------|:------:|-------:|
 | S5-fc     | 21.08  | 0.52   |
 |Cond-S5-Fc | 31.05  | 0.70   |
+
+Both models were evaluated on a test set of 300 sequences with 5 frames being used as input and the following 5 frames being predicted by the network. 
 
 ## Setup to get started
 Make sure you have Python3 installed.
@@ -85,6 +87,8 @@ Except as contained in this notice, the name of the authors shall not be used in
 
 This work is the result of a challenge proposed by ESA as part of the Pi School of AI 2019 Q4 programme.
 We are grateful to all organizers, stakeholders and mentors for providing us this opportunity.
+
+
 
 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6ELxXcZzhZlcyKtNAYf4woGljLbxPKHRJUyTbM_bVlPrWQ_9b&s" width="150" height="40">
 
