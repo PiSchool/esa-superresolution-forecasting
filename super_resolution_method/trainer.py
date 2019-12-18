@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Dec 11 10:01:24 2019
-
-@author: Maximilien_Houel
-"""
 import os
 import argparse
 
