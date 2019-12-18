@@ -27,9 +27,17 @@ In this project to provide better information in air pollution monitoring, based
 The encoder-decoder network uses a [Convolutional LSTM](https://arxiv.org/abs/1506.04214) architecture. The spatial structure of the input is preserved throught the layers of the network. 
 The model is trained using a masked MSE loss and the ADAM optimizer.
 
+We employ two different versions of this architecture. One uses Sentinel-5 sequences solely, the other creates a prediction using the numerical forecast data as a conditional input to the decoder.
+
+
 ## Results
 
-The model's performance is evaluated on the PSNR and SSIM metrics.
+The model's performance is evaluated on the Peak signal-to-noise ratio (PSNR) and Structural Similarity Index Measure (SSIM).
+
+| Model     | PSNR   | SSIM   |
+|-----------|:------:|-------:|
+| S5-fc     | 21.08  | 0.52   |
+|Cond-S5-Fc | 31.05  | 0.70   |
 
 ## Setup to get started
 Make sure you have Python3 installed.
