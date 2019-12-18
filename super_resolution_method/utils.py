@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Nov 27 11:45:10 2019
-
-@author: Maximilien_Houel
-"""
-
 import gdal
 import os
 import numpy as np
