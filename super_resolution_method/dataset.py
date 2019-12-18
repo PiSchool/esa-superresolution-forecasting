@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Thu Nov 21 10:35:01 2019
-
-@author: Maximilien_Houel
-"""
-
 import os
 import torch
 import torchvision
