@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Thu Nov 21 11:01:32 2019
-
-@author: Maximilien_Houel
-"""
-
 import os
 import argparse
 
