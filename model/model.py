@@ -2,7 +2,6 @@ import torch
 import torch.nn as nn
 from base import BaseModel
 import gc
-from model.trajgru import TrajGRU
 
 class CLSTM_cell(nn.Module):
     """Initialize a basic Conv LSTM cell.
@@ -130,7 +129,7 @@ class Net(BaseModel):
     def forward(self, input_tensor, cams=None):
         h = self.enc(input_tensor)
         (b, sl) = input_tensor.shape[:2]
-        #x = torch.zeros((input_tensor.shape[0] , self.n_fut, self.hidden_dim, input_tensor.shape[3],input_tensor.shape[4])).to(self.device)
+        x = torch.zeros((input_tensor.shape[0] , self.n_fut, self.hidden_dim, input_tensor.shape[3],input_tensor.shape[4])).to(self.device)
         x = torch.reshape(cams, (-1, cams.shape[2], cams.shape[3], cams.shape[4]))
         x = self.conv_init(x)
         x = torch.reshape(x, (b, sl, self.hidden_dim, x.shape[2], x.shape[3]))
@@ -141,18 +140,6 @@ class Encoder(nn.Module):
     def __init__(self, shape, input_chans, filter_size, hidden_dim, num_layers, batch_size):
         super().__init__()
         self.clstm = nn.ModuleList([CLSTM(shape, hidden_dim, filter_size, hidden_dim, 1, batch_first=True) for i in range(num_layers)])
-        # self.clstm = nn.ModuleList([TrajGRU(8, hidden_dim//2, (batch_size, shape[0], shape[1]), 
-        #                             zoneout=0.0, L=13, i2h_kernel=(3, 3), i2h_stride=(1, 1), i2h_pad=(1, 1),
-        #                                     h2h_kernel=(5, 5), h2h_dilate=(1, 1)),
-
-        #                             TrajGRU(hidden_dim, hidden_dim, (batch_size, shape[0], shape[1]), zoneout=0.0, L=13,
-        #                                     i2h_kernel=(3, 3), i2h_stride=(1, 1), i2h_pad=(1, 1), h2h_kernel=(5, 5),
-        #                                     h2h_dilate=(1, 1)),
-
-        #                             TrajGRU(hidden_dim, hidden_dim, (batch_size, shape[0], shape[1]),
-        #                                     zoneout=0.0, L=9,
-        #                                     i2h_kernel=(3, 3), i2h_stride=(1, 1), i2h_pad=(1, 1),
-        #                                     h2h_kernel=(3, 3), h2h_dilate=(1, 1))])
         self.subnet = nn.ModuleList([nn.Conv2d(1, hidden_dim, 3, padding=1)])
         self.subnet.extend([nn.Conv2d(hidden_dim,hidden_dim,3,padding=1),nn.Conv2d(hidden_dim,hidden_dim,3,padding=1)])
         self.act = nn.LeakyReLU(0.2)
@@ -187,16 +174,6 @@ class Decoder(nn.Module):
     def __init__(self, shape, filter_size, hidden_dim, num_layers, batch_size):
         super().__init__()
         self.clstm = nn.ModuleList([CLSTM(shape, hidden_dim, filter_size, hidden_dim, 1, batch_first=True) for i in range(num_layers)])
-        # self.clstm = nn.ModuleList([TrajGRU(hidden_dim, hidden_dim, (batch_size, shape[0], shape[1]), zoneout=0.0, L=13,
-        #         i2h_kernel=(3, 3), i2h_stride=(1, 1), i2h_pad=(1, 1),
-        #         h2h_kernel=(3, 3), h2h_dilate=(1, 1)),
-
-        #                             TrajGRU(hidden_dim, hidden_dim, (batch_size, shape[0], shape[1]), zoneout=0.0, L=13,
-        #         i2h_kernel=(3, 3), i2h_stride=(1, 1), i2h_pad=(1, 1), h2h_kernel=(5, 5), h2h_dilate=(1, 1)),
-
-        #                             TrajGRU(hidden_dim//2, hidden_dim//2, (batch_size, shape[0], shape[1]), zoneout=0.0, L=9,
-        #         i2h_kernel=(3, 3), i2h_stride=(1, 1), i2h_pad=(1, 1),
-        #         h2h_kernel=(5, 5), h2h_dilate=(1, 1))])
 
         self.subnet = nn.ModuleList([nn.Conv2d(hidden_dim, hidden_dim,3,padding=1), nn.Conv2d(hidden_dim, hidden_dim, 3, padding=1)])
         self.subnet.append(nn.Conv2d(hidden_dim,1,1,padding=0))

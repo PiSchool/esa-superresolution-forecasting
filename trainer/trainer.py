@@ -2,7 +2,7 @@ import numpy as np
 import torch
 from torchvision.utils import make_grid
 from base import BaseTrainer
-from utils import inf_loop, MetricTracker, mem_report, save_tensors
+from utils import inf_loop, MetricTracker, save_tensors
 import gc
 
 class Trainer(BaseTrainer):
@@ -43,7 +43,6 @@ class Trainer(BaseTrainer):
             (data, cams) = torch.chunk(data, 2, dim=2)
             self.optimizer.zero_grad()
             output = self.model(data, cams)
-            mem_report()
             loss = self.criterion(output, target)
             loss.backward()
             torch.nn.utils.clip_grad_norm_(self.model.parameters(), 0.1)
