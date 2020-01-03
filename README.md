@@ -2,26 +2,14 @@
 
 This repository includes the PyTorch implementation of an encoder-decoder forecasting network. It was built for the prediction of air-pollution variables based on two ESA data products: 
 Atmospheric measurements sensed by the [Sentinel-5p](https://sentinel.esa.int/web/sentinel/missions/sentinel-5p) satellite and an air-quality forecasting model provided by the [Copernicus Atmospheric Monitoring Service](https://atmosphere.copernicus.eu/data) that combines satellite observations with sophisticated chemistry and transport models.
-<!--- 
+
 ## Introduction
+The Sentinel-5p mission is the first of the Sentinel series dedicated to atmospheric composition monitoring. At a spatial resolution of 5.5km and a daily temporal resolution worldwide it can retrieve the concentration of trace gases such as NO2, SO2 and CO.
+In this project, it is investigated if a forecast superior to the numerically modeled one (CAMS) can be created using solely Sentinel-5p satellite data.
+We tackle this problem by employing a Convolutional LSTM for the prediction of sequential sentinel-5p images.
+Since the retrieval of trace gases is heavily affected by clouds and atmospheric noise, Sentinel-5p images contain a lot of No-Data-Values.
 
-The Copernicus program is a European program for Earth Observation and monitoring. The Sentinel mission from the European Space Agency is part of this initiative, it consists of six missions of different satellite sensors for multiple applications as land management, maritime surveillance, atmosphere monitoring… 
 
-Air pollution is known as one of the biggest risks for the environment and human health, due to it consequences the need to monitor it is growing.
-
-Moreover the context of big data in earth observation and the constant development of accurate methods in Artificial Intelligence is creating new opportunity for remote sensing community. By applying deep learning methods on satellite imagery, it produce better data and better analysis.
-
-## Problem statement
-
-In atmospheric pollution, a numerical model produced by the Copernicus Atmosphere Monitoring Service (CAMS) is commonly used. The data produced is a combination of ground measurement and satellite data to monitor the concentration of gases in the total column of the atmosphere. This data is at a global scale with a 40km spatial resolution and an hourly temporal resolution. Moreover the numerical model is providing 5 days of forecasting of the pollution variables.
-Due to the resolution of satellite data, the interest in it is growing up. Sentinel-5p is one of this satellite, launched in 2017 by the European Space Agency. It performs measurements every day all around the world for mapping the pollution gases in the atmosphere with a spatial resolution of 5 km.
-
-## Solution
-
-In this project to provide better information in air pollution monitoring, based on the data available for forecasting of pollution variable, we decided to produce a better resolution data for this purpose. Based on deep learning techniques, the Convolution Neural Network (CNN) learnt from temporal sequences to detect the evolution of Sentinel-5p images through time. By considering the last available image, the model is able to provide five days of forecasting of Sentinel-5p for NO2 concentration in the atmosphere.
-
-<img src="https://github.com/MaxHouel/First/blob/master/random/prediction_solution.PNG?raw=true" width="1000" height="150">
--->
 ## Model architecture
 
 The encoder-decoder network uses a [Convolutional LSTM](https://arxiv.org/abs/1506.04214) architecture. The spatial structure of the input is preserved throught the layers of the network. 
@@ -80,6 +68,11 @@ python main.py --device 0,1,2,3 -c config.json
 ```console
 python test.py -c config.json -r /path/to/model_checkpoint
 ```
+
+## Future work:
+* use a more sophisticated loss, e.g. a weighted loss that assigns weights to each pixel according to its intensity (proposed in [Deep Learning for Precipitation Nowcasting:A Benchmark and A New Model](https://papers.nips.cc/paper/7145-deep-learning-for-precipitation-nowcasting-a-benchmark-and-a-new-model.pdf))
+* investigate if the use of optical imagery can improve the forecasting performance
+
 
 ## License
 
