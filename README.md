@@ -5,10 +5,11 @@ Atmospheric measurements sensed by the [Sentinel-5p](https://sentinel.esa.int/we
 
 ## Introduction
 The Sentinel-5p mission is the first of the Sentinel series dedicated to atmospheric composition monitoring. At a spatial resolution of 5.5km and a daily temporal resolution worldwide it can retrieve the concentration of trace gases such as NO2, SO2 and CO.
+
 In this project, it is investigated if a forecast superior to the numerically modeled one (CAMS) can be created using solely Sentinel-5p satellite data.
 We tackle this problem by employing a Convolutional LSTM for the prediction of sequential sentinel-5p images.
 Since the retrieval of trace gases is heavily affected by clouds and atmospheric noise, Sentinel-5p images contain a lot of No-Data-Values.
-
+To make the prediction model robust against these data inconsistencies we employ a masked loss. We also study the effect of using the corresponding CAMS images as an additional input to the Sentinel-5p prediction model.
 
 ## Model architecture
 
@@ -17,7 +18,7 @@ The model is trained using a masked MSE loss and the ADAM optimizer.
 
 We employ two different versions of this architecture. One uses Sentinel-5 sequences solely (s5-fc), the other creates a prediction using the numerical forecast data as a conditional input to the decoder (Cond-S5-fc).
 
-<!---![alt text]( https://github.com/PiSchool/esa-superres-github/blob/master/data/encoder.png "Encoder")-->
+![alt text]( https://github.com/PiSchool/esa-superres-github/blob/master/data/encdec.png "Encoder-decoder")
 
 
 ## Results
