@@ -13,12 +13,17 @@ To make the prediction model robust against these data inconsistencies we employ
 
 ## Model architecture
 
-The encoder-decoder network uses a [Convolutional LSTM](https://arxiv.org/abs/1506.04214) architecture. The spatial structure of the input is preserved throught the layers of the network. 
+The encoder-decoder network is composed of convolutional layers that are applied on the whole sequence and [Convolutional LSTM](https://arxiv.org/abs/1506.04214) layers that process each sequence element individually. In comparison to a regular LSTM the Convolutional LSTM preserves spatial structure of the input by using convolutions instead of element-wise multiplications in the cell state calculation. 
+
+Each convolutional layer is followed by Batch Normalization for better regularization.
+We use 3 layers in the encoder and the decoder. 
 The model is trained using a masked MSE loss and the ADAM optimizer.
 
-We employ two different versions of this architecture. One uses Sentinel-5 sequences solely (s5-fc), the other creates a prediction using the numerical forecast data as a conditional input to the decoder (Cond-S5-fc).
 
 ![alt text]( https://github.com/PiSchool/esa-superres-github/blob/master/data/encdec.png "Encoder-decoder")
+
+
+We employ two different versions of this architecture. One uses Sentinel-5 sequences solely (s5-fc), the other creates a prediction using the numerical forecast data as a conditional input to the decoder (Cond-S5-fc).
 
 
 ## Results
